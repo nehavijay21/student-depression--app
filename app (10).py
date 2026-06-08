@@ -207,7 +207,7 @@ div[data-testid="column"] > div[data-testid="stVerticalBlock"] {
 # ── Model loader (best = Logistic Regression per notebook evaluation) ──────────
 @st.cache_resource(show_spinner="Training models on dataset…")
 def load_models():
-    df = pd.read_csv('/content/drive/MyDrive/case study/Student Depression Dataset.csv')
+    df = pd.read_csv('Student Depression Dataset.csv')
     df_clean = df.drop(columns=['id', 'Work Pressure', 'Job Satisfaction'], errors='ignore')
     df_clean['Financial Stress'] = df_clean['Financial Stress'].fillna(df_clean['Financial Stress'].median())
     df_clean = df_clean.drop_duplicates().reset_index(drop=True)
