@@ -225,6 +225,18 @@ def load_models():
     le = LabelEncoder()
     for col in df_clean.select_dtypes(include='object').columns:
         df_clean[col] = le.fit_transform(df_clean[col].astype(str))
+    df_clean['Stress_Index'] = (
+        df_clean['Academic Pressure'] + df_clean['Financial Stress']) / 2
+
+    df_clean['Unhealthy_Lifestyle'] = (
+        (df_clean['Sleep Duration'] <= 1) &
+        (df_clean['Dietary Habits'] == 0)
+    ).astype(int)
+
+    df_clean['High_Risk_Flag'] = (
+        (df_clean['Have you ever had suicidal thoughts ?'] == 1) &
+        (df_clean['Family History of Mental Illness'] == 1)
+    ).astype(int)
 
     target   = df_clean['Depression']
     features = df_clean.drop(columns=['Depression'])
@@ -347,6 +359,9 @@ if predict_btn:
         'Work/Study Hours'                     : int(work_study_hours),
         'Financial Stress'                     : int(financial_stress[0]),
         'Family History of Mental Illness'     : 1 if family_history == "Yes" else 0,
+        'Stress_Index'        : (int(academic_pressure[0]) + int(financial_stress[0])) / 2,
+        'Unhealthy_Lifestyle' : 1 if (sleep_map[sleep_duration] <= 1 and diet_map[dietary_habits] == 0) else 0,
+        'High_Risk_Flag'      : 1 if (suicidal_thoughts == "Yes" and family_history == "Yes") else 0,
     }
 
     input_df     = pd.DataFrame([profile])[feature_cols]
