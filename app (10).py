@@ -262,7 +262,7 @@ def load_models():
         cm = confusion_matrix(y_test, m.predict(X_test))
         results[name] = {'model': m, 'acc': acc, 'auc': roc_auc_val, 'fpr': fpr, 'tpr': tpr, 'cm': cm}
 
-    best_name  = max(results, key=lambda k: results[k]['auc'])
+    best_name  = max(results, key=lambda k: results[k]['acc'])
     best_model = results[best_name]['model']
 
     return best_model, best_name, scaler, features.columns.tolist(), results, X_test, y_test
